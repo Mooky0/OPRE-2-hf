@@ -1,3 +1,5 @@
+import sys
+
 class Frame:
     def __init__(self, name:str) -> None:
           self.name : str = name
@@ -98,8 +100,8 @@ def main():
         out += not_used.name
         moves += 1
 
-    print(out)
-    print(moves)
+    ##print(out + '\n' + str(moves), end='')
+    sys.stdout.write(out + '\n' + str(moves))
 
 if '__main__' == __name__:
     main()
