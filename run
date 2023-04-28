@@ -1,0 +1,79 @@
+#!/bin/bash
+
+out=$(cat input1.txt | python3 main.py)
+
+if [[ "$out" == "ABC-AB
+5" ]]
+then
+    echo "Test1: Passed"
+else
+    echo -n "Test1: Failed: "
+    echo $out
+fi
+    
+out=$(cat input2.txt | python3 main.py)
+
+if [[ "$out" == "ABC*A-
+5" ]]
+then
+    echo "Test2: Passed"
+else
+    echo -n "Test2: Failed: "
+    echo $out
+fi
+
+out=$(cat input3.txt | python3 main.py)
+
+if [[ "$out" == "ABC-A--B
+5" ]]
+then
+    echo "Test3: Passed"
+else
+    echo -n "Test3: Failed: "
+    echo $out
+fi
+
+out=$(cat input4.txt | python3 main.py)
+
+if [[ "$out" == "ABC-ABC*
+7" ]]
+then
+    echo "Test4: Passed"
+else
+    echo -n "Test4: Failed: "
+    echo $out
+fi
+
+out=$(cat input5.txt | python3 main.py)
+
+if [[ "$out" == "ABC*AB-CA
+8" ]]
+then
+    echo "Test5: Passed"
+else
+    echo -n "Test5: Failed: "
+    echo $out
+fi
+
+out=$(cat input6.txt | python3 main.py)
+
+if [[ "$out" == "AB-C-A-
+4" ]]
+then
+    echo "Test6: Passed"
+else
+    echo -n "Test6: Failed: "
+    echo $out
+fi
+
+out=$(cat input7.txt | python3 main.py)
+
+if [[ "$out" == "ABC*-B--CB
+7" ]]
+then
+    echo "Test7: Passed"
+else
+    echo -n "Test7: Failed: "
+    echo $out
+fi
+
