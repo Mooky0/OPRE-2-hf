@@ -11,12 +11,12 @@ class Frame:
         if (page > 99 or page < 1):
             raise AttributeError("page must be in (1, 99) interval") 
         self.page = int(page)
-        self.used = True
+        self.used = False
         self.lock = 3
 
     def use(self):
         if (self.page != 0):
-            self.used = False
+            self.used = True
 
     def data(self) -> int:
         return int(self.page)
@@ -25,10 +25,8 @@ class Frame:
         return self.used
     
     def step(self):
-        if(self.lock >= 0):
+        if(self.lock > 0):
             self.lock -= 1
-        if (self.lock < 0):
-            self.use()
 
 class FIFO:
     
@@ -50,25 +48,50 @@ class FIFO:
             self.idx = 0
         return ret
     
+    def pop(self) -> Frame:
+        tmp : Frame = self.frames[0]
+        self.frames.pop(0)
+        return tmp
+    
+    def push(self, frame : Frame):
+        self.frames.append(frame)
+
+    def delete(self, frame : Frame):
+        self.frames.remove(frame)
+
     def step(self):
         for i in self.frames:
             i.step()
 
     def size(self) -> int:
         return len(self.frames)
+    
+    def all_used(self) -> bool:
+        for i in self.frames:
+            if i.lock == 0 and i.used == False:
+                return False
+        return True    
 
-def lookup(page : int, *frames : Frame):
-    for i in frames:
-        if (i.data() == page):
-            return i
-    return None
+    def lookup(self, page : int):
+        for i in self.frames:
+            if (i.data() == page):
+                return i
+        return None
 
-def find_not_used(fifo : FIFO):
-    for i in range(fifo.size()-1):
-        this : Frame = fifo.next()
-        if (not this.is_used()):
-            return this
-    return None
+    def find_not_used(self) -> Frame:
+        i = 0
+        while(i < len(self.frames)):
+            if (self.frames[i].lock > 0):
+                i += 1
+                continue
+            if (self.frames[i].is_used()):
+                self.frames[i].used = False
+                tmp : Frame = self.frames[i]
+                self.frames.remove(self.frames[i])
+                self.frames.append(tmp)
+            else:
+                return self.frames[i]
+        return None
 
 def main():
     out : str = ""
@@ -80,27 +103,24 @@ def main():
     be = input()
     line = be.split(',')
     for i in line:
-        store.step()
-        write = False
-        i = int(i)
-        if (i < 0):
-            i = -i
-            write = True
-        this : Frame = lookup(i, A, B, C)
+        i = abs(int(i))
+        this : Frame = store.lookup(i)
         if (this != None):
             this.use()
             out += "-"
-            continue
-        not_used = find_not_used(store)
-        if(not_used == None):
-            out += "*"
-            moves += 1
-            continue
-        not_used.store(i)
-        out += not_used.name
-        moves += 1
+            store.step()
+        else:
+            not_used = store.find_not_used()
+            if(not_used == None):
+                out += "*"
+                moves += 1
+                store.step()
+            else:
+                store.step()
+                not_used.store(i)
+                out += not_used.name
+                moves += 1
 
-    ##print(out + '\n' + str(moves), end='')
     sys.stdout.write(out + '\n' + str(moves))
 
 if '__main__' == __name__:
