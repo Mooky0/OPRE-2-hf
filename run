@@ -1,14 +1,19 @@
 #!/bin/bash
 
+echo "Running the moodle tests"
+
 out=$(cat input1.txt | python3 main.py)
 
 if [[ "$out" == "ABC-AB
 5" ]]
 then
     echo "Test1: Passed"
+    let "count += 1"
 else
-    echo -n "Test1: Failed: "
-    echo $out
+    echo "Test1: Failed: "
+    echo -ne "\tExpected:\tABC-AB 5\n"
+    echo -ne "\tActual:  \t"
+    echo $out 
 fi
     
 out=$(cat input2.txt | python3 main.py)
@@ -17,8 +22,11 @@ if [[ "$out" == "ABC*A-
 5" ]]
 then
     echo "Test2: Passed"
+    let "count += 1"
 else
-    echo -n "Test2: Failed: "
+    echo "Test2: Failed: "
+    echo -ne "\tExpected:\tABC*A- 5\n"
+    echo -ne "\tActual:  \t"
     echo $out
 fi
 
@@ -28,8 +36,11 @@ if [[ "$out" == "ABC-A--B
 5" ]]
 then
     echo "Test3: Passed"
+    let "count += 1"
 else
-    echo -n "Test3: Failed: "
+    echo "Test3: Failed: "
+    echo -ne "\tExpected:\tABC-A--B 5\n"
+    echo -ne "\tActual:  \t"
     echo $out
 fi
 
@@ -39,8 +50,11 @@ if [[ "$out" == "ABC-ABC*
 7" ]]
 then
     echo "Test4: Passed"
+    let "count += 1"
 else
-    echo -n "Test4: Failed: "
+    echo "Test4: Failed: "
+    echo -ne "\tExpected:\tABC-ABC* 7\n"
+    echo -ne "\tActual:  \t"
     echo $out
 fi
 
@@ -50,8 +64,11 @@ if [[ "$out" == "ABC*AB-CA
 8" ]]
 then
     echo "Test5: Passed"
+    let "count += 1"
 else
-    echo -n "Test5: Failed: "
+    echo "Test5: Failed: "
+    echo -ne "\tExpected:\tABC*AB-CA 8\n"
+    echo -ne "\tActual:  \t"
     echo $out
 fi
 
@@ -61,8 +78,11 @@ if [[ "$out" == "AB-C-A-
 4" ]]
 then
     echo "Test6: Passed"
+    let "count += 1"
 else
-    echo -n "Test6: Failed: "
+    echo "Test6: Failed: "
+    echo -ne "\tExpected:\tAB-C-A- 4\n"
+    echo -ne "\tActual:  \t"
     echo $out
 fi
 
@@ -72,8 +92,13 @@ if [[ "$out" == "ABC*-B--CB
 7" ]]
 then
     echo "Test7: Passed"
+    let "count += 1"
 else
-    echo -n "Test7: Failed: "
+    echo "Test7: Failed: "
+    echo -ne "\tExpected:\tABC*-B--CB 7\n"
+    echo -ne "\tActual:  \t"
     echo $out
 fi
 
+echo -n $count
+echo "/7"
