@@ -87,11 +87,15 @@ class FIFO:
             if (self.frames[i].is_used()):
                 self.frames[i].used = False
                 tmp : Frame = self.frames[i]
-                self.frames.remove(self.frames[i])
+                self.frames.pop(i)
                 self.frames.append(tmp)
             else:
                 return self.frames[i]
         return None
+    
+    def put_back(self, frame : Frame):
+        self.frames.remove(frame)
+        self.frames.append(frame)
 
 def main():
     out : str = ""
@@ -118,6 +122,7 @@ def main():
             else:
                 store.step()
                 not_used.store(i)
+                store.put_back(not_used)
                 out += not_used.name
                 moves += 1
 
